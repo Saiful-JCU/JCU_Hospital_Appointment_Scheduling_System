@@ -1,0 +1,34 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+
+venv/
+
+db.sqlite3
+media/
+staticfiles/
+
+
+.env
+.env.*
+*.env
+
+
+.vscode/
+.idea/
+*.iml
+
+
+# =========================
+# Packaging / build
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+
+

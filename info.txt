@@ -1,0 +1,28 @@
+
+User name - Saiful Islam
+email - msik.milon@gmail.com
+password - hospital2026
+
+Super Users
+=================================
+User name - Saiful 
+email - milon@gmail.com
+password - hospital2026
+
+Patients
+==================================
+
+email - fuliangmart.info@gmail.com
+password - hospital2026
+
+email - nahid@gmail.com
+password - hospital2026
+
+doctor
+==================================
+
+User Name = 
+email - doctor@gmail.com
+password - hospital2026
+
+

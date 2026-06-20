@@ -1,0 +1,187 @@
+
+{% extends "doctors/base.html" %}
+
+{% block content %}
+
+<div style="min-height: 100vh;  padding: 50px 20px; display: flex; justify-content: center;">
+
+  <div style="width: 100%; max-width: 1000px;">
+
+    <!-- Header -->
+    <div style="
+        border-radius: 24px;
+        padding: 35px 40px;
+        color: white;
+        box-shadow: 0 16px 35px rgba(37, 99, 235, 0.25);
+        margin-bottom: 32px;
+        text-align: center;
+    ">
+      <h2 style="margin: 0; font-size: 34px; font-weight: 700; letter-spacing: 0.3px;">
+        Patient Directory
+      </h2>
+      <p style="margin: 12px 0 0; font-size: 15px; opacity: 0.95;">
+        Choose a patient from your appointment list and add a private consultation note.
+      </p>
+    </div>
+
+    {% for patient in patients %}
+      <div style="
+          background: #ffffff;
+          border-radius: 22px;
+          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+          padding: 24px 28px;
+          margin-bottom: 22px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          border: 1px solid #e5e7eb;
+      ">
+
+        <!-- Left side -->
+        <div style="display: flex; align-items: center; gap: 18px; flex: 1;">
+
+          <!-- Avatar -->
+          <div style="
+              width: 68px;
+              height: 68px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 24px;
+              font-weight: 700;
+              color: #1d4ed8;
+              flex-shrink: 0;
+              border: 2px solid #dbeafe;
+          ">
+            {{ patient.user.first_name|slice:":1" }}{{ patient.user.last_name|slice:":1" }}
+          </div>
+
+          <!-- Info -->
+          <div style="flex: 1;">
+            <h4 style="margin: 0 0 10px; font-size: 22px; font-weight: 700; color: #111827;">
+              {{ patient.user.first_name }} {{ patient.user.last_name }}
+            </h4>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px 18px;">
+
+              <div style="
+                  background: #f8fafc;
+                  border: 1px solid #e5e7eb;
+                  border-radius: 12px;
+                  padding: 10px 14px;
+                  min-width: 180px;
+              ">
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Username</div>
+                <div style="font-size: 14px; font-weight: 600; color: #111827;">
+                  {{ patient.user.username }}
+                </div>
+              </div>
+
+              <div style="
+                  background: #f8fafc;
+                  border: 1px solid #e5e7eb;
+                  border-radius: 12px;
+                  padding: 10px 14px;
+                  min-width: 240px;
+              ">
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Email</div>
+                <div style="font-size: 14px; font-weight: 600; color: #111827;">
+                  {{ patient.user.email }}
+                </div>
+              </div>
+
+              {% if patient.insurance %}
+              <div style="
+                  background: #f8fafc;
+                  border: 1px solid #e5e7eb;
+                  border-radius: 12px;
+                  padding: 10px 14px;
+                  min-width: 180px;
+              ">
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Insurance</div>
+                <div style="font-size: 14px; font-weight: 600; color: #111827;">
+                  {{ patient.insurance }}
+                </div>
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side button -->
+        <div style="flex-shrink: 0;">
+          <a href="{% url 'add_consultation_note' patient.user.id %}"
+             style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                color: white;
+                padding: 14px 22px;
+                border-radius: 14px;
+                font-size: 15px;
+                font-weight: 700;
+                box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
+                min-width: 150px;
+             ">
+            Add Note
+          </a>
+          <a href="{% url 'patient_history' patient.user.id %}"
+              style="
+                  display:inline-block;
+                  text-decoration:none;
+                  background: linear-gradient(135deg, #0f766e, #0d9488);
+                  color:white;
+                  padding:12px 20px;
+                  border-radius:12px;
+                  font-size:14px;
+                  font-weight:700;
+                  margin-left:10px;
+              ">
+              View History
+            </a>
+        </div>
+
+      </div>
+    {% empty %}
+      <div style="
+          background: #ffffff;
+          border-radius: 22px;
+          padding: 50px 30px;
+          text-align: center;
+          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+          border: 1px solid #e5e7eb;
+      ">
+        <div style="
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #2563eb;
+        ">
+          👤
+        </div>
+
+        <h3 style="margin: 0 0 10px; font-size: 24px; color: #111827;">
+          No Patients Found
+        </h3>
+        <p style="margin: 0; color: #6b7280; font-size: 15px;">
+          There are no patients linked to your appointments yet.
+        </p>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}

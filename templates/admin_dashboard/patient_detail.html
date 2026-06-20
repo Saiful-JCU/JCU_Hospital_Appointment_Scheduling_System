@@ -1,0 +1,86 @@
+{% extends "admin_dashboard/base.html" %}
+
+{% block title %}Patient Detail{% endblock %}
+{% block page_title %}Patient Detail{% endblock %}
+
+{% block content %}
+<div class="dashboard-card mb-4">
+    <h3 class="mb-4">Patient Profile</h3>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <strong>Full Name:</strong><br>
+            {{ patient.user.first_name }} {{ patient.user.last_name }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <strong>Username:</strong><br>
+            {{ patient.user.username }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <strong>Email:</strong><br>
+            {{ patient.user.email }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <strong>Insurance:</strong><br>
+            {{ patient.insurance }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <strong>Gender:</strong><br>
+            {{ patient.user.gender }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <strong>Birthday:</strong><br>
+            {{ patient.user.birthday|default:"-" }}
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <strong>Address:</strong><br>
+            {% if patient.user.id_address %}
+                {{ patient.user.id_address }}
+            {% else %}
+                No address added
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <h3 class="mb-4">Appointment History</h3>
+
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>#</th>
+                    <th>Doctor</th>
+                    <th>Summary</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in appointments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.doctor.user.first_name }} {{ item.doctor.user.last_name }}</td>
+                    <td>{{ item.summary }}</td>
+                    <td>{{ item.start_date }}</td>
+                    <td>{{ item.time }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No appointment history found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

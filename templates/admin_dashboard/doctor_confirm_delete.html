@@ -1,0 +1,27 @@
+{% extends 'admin_dashboard/base.html' %}
+{% block content %}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-3">Delete Doctor</h2>
+
+            <p>
+                Are you sure you want to delete
+                <strong>Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</strong>?
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    Yes, Delete
+                </button>
+                <a href="{% url 'admin_doctor_list' %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

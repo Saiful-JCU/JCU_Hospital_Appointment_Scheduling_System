@@ -1,0 +1,83 @@
+{% extends "users/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+    <section class="container my-5">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold">Latest Health Blogs</h2>
+        <p class="text-muted">Read health tips and articles from our doctors</p>
+      </div>
+
+      {% if blogs %}
+      <div id="blogCarousel" class="carousel slide" data-bs-ride="carousel">
+        
+        <!-- indicators -->
+        <div class="carousel-indicators">
+          {% for blog in blogs %}
+            <button type="button"
+                    data-bs-target="#blogCarousel"
+                    data-bs-slide-to="{{ forloop.counter0 }}"
+                    class="{% if forloop.first %}active{% endif %}"
+                    {% if forloop.first %}aria-current="true"{% endif %}
+                    aria-label="Slide {{ forloop.counter }}">
+            </button>
+          {% endfor %}
+        </div>
+
+        <!-- slides -->
+        <div class="carousel-inner rounded shadow">
+
+          {% for blog in blogs %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="row align-items-center bg-white p-4" style="min-height: 380px;">
+
+              <!-- blog image -->
+              <div class="col-md-5 text-center mb-3 mb-md-0">
+                {% if blog.thumbnail %}
+                  <img src="{{ blog.thumbnail.url }}" class="img-fluid rounded" style="max-height: 280px; object-fit: cover;" alt="{{ blog.title }}">
+                {% else %}
+                  <img src="{% static 'img/default-blog.jpg' %}" class="img-fluid rounded" style="max-height: 280px; object-fit: cover;" alt="Default blog image">
+                {% endif %}
+              </div>
+
+              <!-- blog content -->
+              <div class="col-md-7">
+                <span class="badge bg-primary mb-2">{{ blog.id_category }}</span>
+                <h3 class="fw-bold">{{ blog.title }}</h3>
+                <p class="text-muted mb-2">
+                  By Dr. {{ blog.doctor.user.first_name }} {{ blog.doctor.user.last_name }}
+                  • {{ blog.posted_at }}
+                </p>
+                <p>
+                  {{ blog.summary|truncatewords:35 }}
+                </p>
+
+                <a href="#" class="btn btn-primary mt-2">Read More</a>
+              </div>
+
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+
+        <!-- controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#blogCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#blogCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+        </button>
+      </div>
+      {% else %}
+        <div class="text-center text-muted">
+          <p>No blogs available right now.</p>
+        </div>
+      {% endif %}
+    </section>
+
+{% endblock content %}

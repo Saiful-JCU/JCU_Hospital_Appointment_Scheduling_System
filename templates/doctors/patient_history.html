@@ -1,0 +1,258 @@
+{% extends "doctors/base.html" %}
+
+{% block content %}
+
+
+
+<div style="min-height: 100vh; background: linear-gradient(135deg, #eef5ff 0%, #f8fbff 100%); padding: 40px 20px; display: flex; justify-content: center;">
+
+  <div style="width: 100%; max-width: 1200px;">
+
+    <!-- Header -->
+    <div style="
+        background: linear-gradient(135deg, #1d4ed8, #2563eb, #3b82f6);
+        border-radius: 28px;
+        padding: 35px;
+        color: white;
+        box-shadow: 0 18px 40px rgba(37, 99, 235, 0.22);
+        margin-bottom: 28px;
+    ">
+      <h2 style="margin: 0; font-size: 32px; font-weight: 800;">
+        Patient History
+      </h2>
+      <p style="margin: 10px 0 0; font-size: 15px; opacity: 0.95;">
+        Full patient profile, appointment history and consultation notes.
+      </p>
+    </div>
+
+    <!-- Patient Profile Card -->
+    <div style="
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        padding: 30px;
+        margin-bottom: 28px;
+        border: 1px solid #e5e7eb;
+    ">
+      <div style="display: flex; gap: 25px; align-items: center; flex-wrap: wrap;">
+
+        <!-- Avatar -->
+        <div>
+          <img src="{{ patient.user.profile_avatar.url }}"
+               alt="Patient Avatar"
+               style="
+                  width: 120px;
+                  height: 120px;
+                  object-fit: cover;
+                  border-radius: 50%;
+                  border: 4px solid #dbeafe;
+                  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+               ">
+        </div>
+
+        <!-- Basic Info -->
+        <div style="flex: 1;">
+          <h3 style="margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #111827;">
+            {{ patient.user.first_name }} {{ patient.user.last_name }}
+          </h3>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 15px;">
+
+            <div style="background:#f8fafc; padding:12px 16px; border-radius:14px; border:1px solid #e5e7eb; min-width:220px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:4px;">Username</div>
+              <div style="font-size:15px; font-weight:700; color:#111827;">{{ patient.user.username }}</div>
+            </div>
+
+            <div style="background:#f8fafc; padding:12px 16px; border-radius:14px; border:1px solid #e5e7eb; min-width:240px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:4px;">Email</div>
+              <div style="font-size:15px; font-weight:700; color:#111827;">{{ patient.user.email }}</div>
+            </div>
+
+            <div style="background:#f8fafc; padding:12px 16px; border-radius:14px; border:1px solid #e5e7eb; min-width:160px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:4px;">Gender</div>
+              <div style="font-size:15px; font-weight:700; color:#111827;">{{ patient.user.gender }}</div>
+            </div>
+
+            <div style="background:#f8fafc; padding:12px 16px; border-radius:14px; border:1px solid #e5e7eb; min-width:180px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:4px;">Birthday</div>
+              <div style="font-size:15px; font-weight:700; color:#111827;">
+                {{ patient.user.birthday|default:"Not provided" }}
+              </div>
+            </div>
+
+            <div style="background:#f8fafc; padding:12px 16px; border-radius:14px; border:1px solid #e5e7eb; min-width:180px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:4px;">Insurance</div>
+              <div style="font-size:15px; font-weight:700; color:#111827;">
+                {{ patient.insurance|default:"Not provided" }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div style="margin-top: 22px;">
+        <div style="
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px 18px;
+        ">
+          <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Address</div>
+          <div style="font-size: 15px; color: #111827; font-weight: 600;">
+            {% if patient.user.id_address %}
+              {{ patient.user.id_address.address_line }},
+              {{ patient.user.id_address.region }},
+              {{ patient.user.id_address.city }},
+              {{ patient.user.id_address.code_postal }}
+            {% else %}
+              No address available
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Appointment History -->
+    <div style="
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        padding: 28px;
+        margin-bottom: 28px;
+        border: 1px solid #e5e7eb;
+    ">
+      <h3 style="margin: 0 0 18px; font-size: 24px; font-weight: 800; color: #111827;">
+        Appointment History
+      </h3>
+
+      {% if appointments %}
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
+            <thead>
+              <tr style="background: #f8fbff;">
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Date</th>
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Doctor</th>
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Summary</th>
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Description</th>
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Time</th>
+                <th style="padding: 14px; text-align:left; font-size:14px; color:#374151;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in appointments %}
+              <tr style="border-top: 1px solid #eef2f7;">
+                <td style="padding: 14px; color:#111827; font-weight:600;">{{ item.start_date }}</td>
+                <td style="padding: 14px; color:#334155;">Dr. {{ item.doctor.user.first_name }} {{ item.doctor.user.last_name }}</td>
+                <td style="padding: 14px; color:#334155;">{{ item.summary }}</td>
+                <td style="padding: 14px; color:#334155;">{{ item.description }}</td>
+                <td style="padding: 14px; color:#334155;">{{ item.time }}</td>
+                <td style="padding: 14px;">
+                  <span style="
+                      display:inline-block;
+                      background:#eff6ff;
+                      color:#1d4ed8;
+                      padding:8px 12px;
+                      border-radius:999px;
+                      font-size:13px;
+                      font-weight:700;
+                  ">
+                    {{ item.status }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div style="
+            background:#f8fafc;
+            padding:20px;
+            border-radius:16px;
+            text-align:center;
+            color:#6b7280;
+            font-size:15px;
+        ">
+          No appointment history found for this patient.
+        </div>
+      {% endif %}
+    </div>
+
+
+    <!-- Consultation Notes -->
+    <div style="
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        padding: 28px;
+        border: 1px solid #e5e7eb;
+    ">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:15px; flex-wrap:wrap;">
+        <h3 style="margin: 0; font-size: 24px; font-weight: 800; color: #111827;">
+          Consultation Notes
+        </h3>
+
+        <a href="{% url 'add_consultation_note' patient.user.id %}" style="
+            text-decoration:none;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color:white;
+            padding:12px 18px;
+            border-radius:12px;
+            font-size:14px;
+            font-weight:700;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
+        ">
+          + Add New Note
+        </a>
+      </div>
+
+      {% if notes %}
+        {% for note in notes %}
+          <div style="
+              background:#f8fbff;
+              border:1px solid #e5edf8;
+              border-radius:18px;
+              padding:20px;
+              margin-bottom:16px;
+          ">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:15px; flex-wrap:wrap;">
+              <div>
+                <h4 style="margin:0 0 8px; font-size:20px; font-weight:800; color:#111827;">
+                  {{ note.title }}
+                </h4>
+                <div style="font-size:13px; color:#6b7280;">
+                  Dr. {{ note.doctor.user.first_name }} {{ note.doctor.user.last_name }} • {{ note.created_at }}
+                </div>
+              </div>
+            </div>
+
+            <p style="margin:16px 0 0; font-size:15px; line-height:1.8; color:#374151;">
+              {{ note.notes }}
+            </p>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style="
+            background:#f8fafc;
+            padding:20px;
+            border-radius:16px;
+            text-align:center;
+            color:#6b7280;
+            font-size:15px;
+        ">
+          No consultation notes found for this patient.
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}

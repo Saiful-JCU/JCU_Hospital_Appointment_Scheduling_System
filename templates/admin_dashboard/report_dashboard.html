@@ -1,0 +1,52 @@
+{% extends "admin_dashboard/base.html" %}
+
+{% block title %}Report Dashboard{% endblock %}
+{% block page_title %}Report Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="dashboard-card text-center">
+            <h5>Total Appointments</h5>
+            <h2 class="text-primary">{{ total_appointments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="dashboard-card text-center">
+            <h5>Today's Appointments</h5>
+            <h2 class="text-success">{{ today_appointments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="dashboard-card text-center">
+            <h5>This Week</h5>
+            <h2 class="text-warning">{{ weekly_appointments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="dashboard-card text-center">
+            <h5>Today's Patient Flow</h5>
+            <h2 class="text-danger">{{ total_patients_today }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <h4 class="mb-3">Quick Report Links</h4>
+
+    <div class="d-flex flex-wrap gap-3">
+        <a href="{% url 'appointments_per_day_report' %}" class="btn btn-primary">
+            Appointments Per Day
+        </a>
+        <a href="{% url 'appointments_per_week_report' %}" class="btn btn-success">
+            Appointments Per Week
+        </a>
+        <a href="{% url 'daily_patient_flow_report' %}" class="btn btn-dark">
+            Daily Patient Flow
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "admin_dashboard/base.html" %}
+
+{% block title %}Appointments Per Week{% endblock %}
+{% block page_title %}Appointments Per Week{% endblock %}
+
+{% block content %}
+<div class="dashboard-card">
+    <h3 class="mb-3">Appointments Per Week</h3>
+    <p class="text-muted">
+        Week: {{ start_of_week }} to {{ end_of_week }}
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Total Appointments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day, total in week_days.items %}
+                <tr>
+                    <td>{{ day }}</td>
+                    <td>{{ day|date:"l" }}</td>
+                    <td>{{ total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>Available Slots</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th></th>
+        </tr>
+
+        {% for slot in slots %}
+
+        <tr>
+
+            <td>{{ slot.date }}</td>
+
+            <td>{{ slot.start_time }}</td>
+
+            <td>{{ slot.end_time }}</td>
+
+            <td>
+
+                <a href="{% url 'book_appointment' slot.id %}">
+                    Book Appointment
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        {% for slot in schedules %}
+
+<tr>
+
+    <td>{{ slot.date }}</td>
+
+    <td>
+        {{ slot.start_time }}
+        -
+        {{ slot.end_time }}
+    </td>
+
+    <td>
+
+        <a
+            href="{% url 'patient_confirm_book' slot.id %}"
+            class="btn btn-success"
+        >
+            Book
+        </a>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+    </table>
+
+</div>
+
+
+
+
+{% endblock %}

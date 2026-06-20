@@ -1,0 +1,247 @@
+{% extends 'doctors/base.html' %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock title %}
+{% block page_title %} Doctor Dashboard {% endblock page_title %}
+
+{% block content %}
+<main>
+
+  <div class="row justify-content-between">
+
+    <!-- Today Appointments -->
+    <div class="bg-light p-2 shadow col-12 col-lg-4 mb-3">
+      <h5 class="mt-2">
+        <i class="ms-2 bi bi-briefcase-fill"></i> Today Appointments
+      </h5>
+
+      <div style="max-height: 230px; overflow-y: auto;">
+        {% if today_appointments %}
+          <table class="table mt-3">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appointment in today_appointments %}
+              <tr>
+                <td>
+                  {{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}
+                </td>
+                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="text-center py-4 text-muted">
+            No appointments for today
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <!-- Reminder block (leave static for now if you don't have reminder model yet) -->
+    <div class="bg-light p-2 shadow col-12 col-lg-4 mb-3">
+      <div>
+        <div class="d-flex justify-content-between">
+          <h5 class="mt-2 mb-2">
+            <i class="ms-2 bi bi-alarm-fill"></i> Reminder
+          </h5>
+
+          <button type="button" class="btn text-end" data-bs-toggle="modal" data-bs-target="#Remainder">
+            <i class="bi bi-calendar-plus fs-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="Remainder" tabindex="-1" aria-labelledby="Remainder" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div><h5 class="modal-title" id="exampleModalLabel">Add Reminder</h5></div>
+              <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            </div>
+
+            <form action="">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="title" class="form-label"><i class="bi bi-calendar"></i> Title</label>
+                  <input type="text" class="form-control" id="title" placeholder="Enter reminder title">
+                </div>
+
+                <div class="mb-3">
+                  <label for="date" class="form-label"><i class="bi bi-calendar"></i> Date</label>
+                  <input type="date" class="form-control" id="date">
+                </div>
+
+                <div class="form-floating">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="text" style="height: 100px"></textarea>
+                  <label for="text">Comments</label>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div style="overflow-y: scroll; height: 130px;">
+        <div class="alert" role="alert">
+          <h6 class="alert-heading fw-bold">Reminder</h6>
+          <p class="">
+            Reminder feature is not connected yet.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Details -->
+    <div class="bg-light p-2 shadow col-12 col-lg-3 mb-3">
+      <h5 class="mt-2">
+        <i class="ms-2 bi bi-pie-chart-fill"></i> Details
+      </h5>
+
+      <div class="summary-single">
+        <span class="ti-id-badge"></span>
+        <div>
+          <h5>{{ total_appointments }}</h5>
+          <small>Total Appointments</small>
+        </div>
+      </div>
+
+      <div class="summary-single">
+        <span class="ti-face-smile"></span>
+        <div>
+          <h5>{{ total_patients }}</h5>
+          <small>Total Patients</small>
+        </div>
+      </div>
+
+      <div class="summary-single">
+        <span class="ti-check-box"></span>
+        <div>
+          <h5>{{ accepted_appointments }}</h5>
+          <small>Accepted Appointments</small>
+        </div>
+      </div>
+
+      <div class="summary-single">
+        <span class="ti-timer"></span>
+        <div>
+          <h5>{{ waited_appointments }}</h5>
+          <small>Waiting Appointments</small>
+        </div>
+      </div>
+
+      <div class="summary-single">
+        <span class="ti-close"></span>
+        <div>
+          <h5>{{ cancelled_appointments }}</h5>
+          <small>Cancelled Appointments</small>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <section class="recent">
+    <div class="activity-grid">
+
+      <!-- Chart -->
+      <div class="activity-card">
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="summary">
+
+        <div class="bday-card shadow">
+          <div class="bday-flex justify-content-between">
+            <div class="col-3 d-flex justify-content-center align-items-center">
+              {% if request.user.profile_avatar %}
+                <img src="{{ request.user.profile_avatar.url }}" class="img-fluid" style="width: 50px; height:50px; border-radius: 50%; object-fit: cover;">
+              {% else %}
+                <img src="https://missionvet.ca/wp-content/uploads/2020/01/User-Profile-PNG-1.png" class="img-fluid" style="width: 50px; border-radius: 50%;">
+              {% endif %}
+            </div>
+
+            <div class="bday-info col-8">
+              <h5>Dr. {{ request.user.first_name }} {{ request.user.last_name }}</h5>
+              <small>{{ today_appointments_count }} appointments today</small><br>
+              <button class="btn btn-dark btn-sm mt-2">
+                <span class="ti-gift"></span>
+                Total Blogs: {{ total_blogs }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bday-card shadow mt-3">
+          <div class="p-3">
+            <h5 class="mb-3">Blog Statistics</h5>
+            <p class="mb-1"><strong>Total Blogs:</strong> {{ total_blogs }}</p>
+            <p class="mb-1"><strong>Published:</strong> {{ published_blogs }}</p>
+            <p class="mb-0"><strong>Drafts:</strong> {{ draft_blogs }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    const labels = [
+      {% for item in appointments_per_day %}
+        "{{ item.start_date|date:'M d' }}",
+      {% endfor %}
+    ];
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Appointments This Month',
+        backgroundColor: 'rgb(25, 9, 32)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [
+          {% for item in appointments_per_day %}
+            {{ item.count }},
+          {% endfor %}
+        ],
+      }]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: true
+      }
+    };
+
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script>
+
+</main>
+{% endblock  %}

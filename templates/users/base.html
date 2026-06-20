@@ -1,0 +1,439 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{% endblock title %} - JCU Hospital  Management Hospital Appointment Management System</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img\logo.png' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/base-style.css' %}" rel="stylesheet"/>
+    <meta name="description" content="Smart healthcare appointment management system by Jingdezhen Ceramic University. Book doctors, manage schedules, and receive reminders online." />
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --primary:#0D6EFD;
+        --secondary:#4FD1C5;
+        --accent:#5B8DEF;
+        --bg:#F8FAFC;
+        --dark:#1E293B;
+        --light:#64748B;
+        --success:#10B981;
+        --white:#FFFFFF;
+        --radius:12px;
+        --shadow-sm:0 4px 14px rgba(15,23,42,.06);
+        --shadow-md:0 12px 30px rgba(15,23,42,.08);
+        --shadow-lg:0 20px 50px rgba(13,110,253,.18);
+        --gradient:linear-gradient(135deg,#0D6EFD 0%,#5B8DEF 60%,#4FD1C5 100%);
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      body{
+        font-family:'Poppins','Segoe UI',Arial,sans-serif;
+        background:var(--bg);
+        color:var(--dark);
+        line-height:1.6;
+        -webkit-font-smoothing:antialiased;
+      }
+      h1,h2,h3,h4,h5{font-weight:700;color:var(--dark);letter-spacing:-.02em}
+      p{color:var(--light)}
+      .section{padding:100px 0}
+      .section-title{font-size:40px;margin-bottom:14px}
+      .section-sub{color:var(--light);max-width:640px;margin:0 auto 56px;font-size:17px}
+      .eyebrow{
+        display:inline-block;padding:6px 14px;border-radius:999px;
+        background:rgba(13,110,253,.08);color:var(--primary);
+        font-weight:600;font-size:13px;letter-spacing:.04em;margin-bottom:16px;
+      }
+      /* Buttons */
+      .btn{border-radius:var(--radius);font-weight:600;padding:12px 26px;transition:all .25s ease}
+      .btn-primary-grad{background:var(--gradient);color:#fff;border:none;box-shadow:0 10px 24px rgba(13,110,253,.28)}
+      .btn-primary-grad:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(13,110,253,.38);color:#fff}
+      .btn-outline-soft{border:1.5px solid #e2e8f0;color:var(--dark);background:#fff}
+      .btn-outline-soft:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
+      .btn-ghost{color:var(--dark);background:transparent;border:none;font-weight:500}
+      .btn-ghost:hover{color:var(--primary)}
+      /* Navbar */
+      .navbar{
+        background:rgba(255,255,255,.85);
+        backdrop-filter:saturate(180%) blur(14px);
+        -webkit-backdrop-filter:saturate(180%) blur(14px);
+        transition:all .3s ease;
+        padding:16px 0;
+        border-bottom:1px solid transparent;
+      }
+      .navbar.scrolled{box-shadow:var(--shadow-sm);border-bottom-color:#eef2f7;padding:10px 0}
+      .navbar-brand{font-weight:700;font-size:20px;color:var(--dark);display:flex;align-items:center;gap:10px}
+      .navbar-brand .logo-mark{
+        width:38px;height:38px;border-radius:10px;background:var(--gradient);
+        display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;
+        box-shadow:0 6px 18px rgba(13,110,253,.35);
+      }
+      .nav-link{color:var(--dark)!important;font-weight:500;margin:0 6px;position:relative}
+      .nav-link:hover{color:var(--primary)!important}
+      .nav-link::after{
+        content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;
+        background:var(--primary);transform:scaleX(0);transform-origin:right;
+        transition:transform .3s ease;border-radius:2px;
+      }
+      .nav-link:hover::after{transform:scaleX(1);transform-origin:left}
+      /* Hero */
+      .hero{padding:160px 0 100px;position:relative;overflow:hidden}
+      .hero::before{
+        content:"";position:absolute;top:-200px;right:-200px;width:600px;height:600px;
+        border-radius:50%;background:radial-gradient(circle,rgba(79,209,197,.25),transparent 70%);
+        z-index:0;
+      }
+      .hero::after{
+        content:"";position:absolute;bottom:-200px;left:-200px;width:500px;height:500px;
+        border-radius:50%;background:radial-gradient(circle,rgba(91,141,239,.22),transparent 70%);
+        z-index:0;
+      }
+      .hero .container{position:relative;z-index:1}
+      .hero h1{font-size:56px;line-height:1.1;margin-bottom:22px}
+      .hero h1 .grad{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+      .hero p.lead{font-size:18px;color:var(--light);margin-bottom:32px;max-width:540px}
+      .hero-meta{display:flex;align-items:center;gap:20px;margin-top:32px;flex-wrap:wrap}
+      .hero-meta .avatars{display:flex}
+      .hero-meta .avatars span{
+        width:38px;height:38px;border-radius:50%;border:2px solid #fff;margin-left:-10px;
+        background-size:cover;background-position:center;
+        box-shadow:0 4px 10px rgba(0,0,0,.08);
+      }
+      .hero-meta .avatars span:nth-child(1){background:linear-gradient(135deg,#0D6EFD,#5B8DEF);margin-left:0}
+      .hero-meta .avatars span:nth-child(2){background:linear-gradient(135deg,#4FD1C5,#10B981)}
+      .hero-meta .avatars span:nth-child(3){background:linear-gradient(135deg,#5B8DEF,#4FD1C5)}
+      .hero-meta .avatars span:nth-child(4){background:linear-gradient(135deg,#10B981,#0D6EFD)}
+      .hero-meta small{color:var(--light)}
+      .hero-meta strong{color:var(--dark)}
+      /* Hero illustration */
+      .hero-illu{position:relative;height:520px}
+      .float-card{
+        position:absolute;background:#fff;border-radius:16px;padding:18px;
+        box-shadow:var(--shadow-md);border:1px solid #eef2f7;
+      }
+      .float-card .icon{
+        width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+        color:#fff;font-size:20px;
+      }
+      .float-1{top:30px;left:0;width:260px;animation:float 6s ease-in-out infinite}
+      .float-1 .icon{background:var(--gradient)}
+      .float-2{top:160px;right:0;width:280px;animation:float 6s ease-in-out infinite;animation-delay:1.5s}
+      .float-2 .icon{background:linear-gradient(135deg,#4FD1C5,#10B981)}
+      .float-3{bottom:80px;left:40px;width:300px;animation:float 6s ease-in-out infinite;animation-delay:3s}
+      .float-3 .icon{background:linear-gradient(135deg,#5B8DEF,#0D6EFD)}
+      .float-4{bottom:0;right:30px;width:240px;animation:float 6s ease-in-out infinite;animation-delay:2s}
+      .float-4 .icon{background:linear-gradient(135deg,#10B981,#4FD1C5)}
+      .float-card h6{margin:0;font-size:14px;font-weight:600;color:var(--dark)}
+      .float-card small{color:var(--light);font-size:12px}
+      .calendar-mini{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+      .calendar-mini span{
+        height:24px;font-size:11px;display:flex;align-items:center;justify-content:center;
+        border-radius:6px;color:var(--light);
+      }
+      .calendar-mini .active{background:var(--primary);color:#fff;font-weight:600}
+      @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+      /* Trust / stats */
+      .trust{background:#fff;padding:60px 0;border-top:1px solid #eef2f7;border-bottom:1px solid #eef2f7}
+      .stat-num{font-size:46px;font-weight:800;background:var(--gradient);
+        -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+      .stat-label{color:var(--light);margin-top:8px;font-weight:500}
+      /* Features */
+      .feature-card{
+        background:#fff;border-radius:var(--radius);padding:32px;height:100%;
+        border:1px solid #eef2f7;transition:all .35s ease;box-shadow:var(--shadow-sm);
+      }
+      .feature-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:transparent}
+      .feature-icon{
+        width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+        background:rgba(13,110,253,.08);color:var(--primary);font-size:26px;margin-bottom:20px;
+      }
+      .feature-card:nth-child(2n) .feature-icon{background:rgba(79,209,197,.14);color:#0BA39B}
+      .feature-card:nth-child(3n) .feature-icon{background:rgba(91,141,239,.14);color:var(--accent)}
+      .feature-card h4{font-size:20px;margin-bottom:10px}
+      /* How it works */
+      .how-section{background:linear-gradient(180deg,#fff 0%,#F8FAFC 100%)}
+      .step-card{
+        background:#fff;border-radius:var(--radius);padding:30px;text-align:center;
+        border:1px solid #eef2f7;height:100%;position:relative;transition:all .3s ease;
+      }
+      .step-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+      .step-num{
+        width:54px;height:54px;border-radius:50%;background:var(--gradient);color:#fff;
+        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;
+        margin:0 auto 18px;box-shadow:0 8px 20px rgba(13,110,253,.3);
+      }
+      .step-line{
+        position:absolute;top:54px;right:-12%;width:24%;height:2px;
+        background:linear-gradient(90deg,var(--primary),transparent);
+      }
+      @media(max-width:991px){.step-line{display:none}}
+      /* Departments */
+      .dept-card{
+        background:#fff;border-radius:var(--radius);padding:28px;text-align:center;
+        border:1px solid #eef2f7;transition:all .3s ease;cursor:pointer;height:100%;
+      }
+      .dept-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:transparent}
+      .dept-icon{
+        width:64px;height:64px;border-radius:16px;background:rgba(13,110,253,.08);color:var(--primary);
+        display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;
+        transition:all .3s ease;
+      }
+      .dept-card:hover .dept-icon{background:var(--gradient);color:#fff;transform:scale(1.05)}
+      .dept-card h5{margin-bottom:6px;font-size:18px}
+      .dept-card small{color:var(--light)}
+      /* Doctors */
+      .doctor-card{
+        background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid #eef2f7;
+        transition:all .3s ease;height:100%;
+      }
+      .doctor-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+      .doctor-photo{
+        height:240px;display:flex;align-items:center;justify-content:center;
+        background:linear-gradient(135deg,rgba(13,110,253,.1),rgba(79,209,197,.1));
+        font-size:90px;color:var(--primary);
+      }
+      .doctor-card:nth-child(2) .doctor-photo{background:linear-gradient(135deg,rgba(79,209,197,.15),rgba(91,141,239,.1));color:#0BA39B}
+      .doctor-card:nth-child(3) .doctor-photo{background:linear-gradient(135deg,rgba(91,141,239,.15),rgba(13,110,253,.1));color:var(--accent)}
+      .doctor-card:nth-child(4) .doctor-photo{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(79,209,197,.1));color:var(--success)}
+      .doctor-body{padding:22px}
+      .doctor-body h5{margin-bottom:4px;font-size:18px}
+      .doctor-body .spec{color:var(--primary);font-weight:500;font-size:14px}
+      .doctor-meta{display:flex;justify-content:space-between;align-items:center;margin:14px 0;color:var(--light);font-size:14px}
+      .stars{color:#f59e0b}
+      /* Testimonials */
+      .testimonial-section{background:#fff}
+      .testi-card{
+        background:#F8FAFC;border-radius:var(--radius);padding:36px;margin:10px;
+        border:1px solid #eef2f7;
+      }
+      .testi-quote{font-size:48px;color:var(--primary);opacity:.25;line-height:0;margin-bottom:14px}
+      .testi-text{color:var(--dark);font-size:17px;line-height:1.7;margin-bottom:24px}
+      .testi-user{display:flex;align-items:center;gap:14px}
+      .testi-avatar{
+        width:52px;height:52px;border-radius:50%;background:var(--gradient);color:#fff;
+        display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;
+      }
+      .testi-user h6{margin:0;font-size:15px}
+      .testi-user small{color:var(--light)}
+      .carousel-control-prev,.carousel-control-next{width:44px;height:44px;border-radius:50%;background:#fff;
+        box-shadow:var(--shadow-sm);top:50%;transform:translateY(-50%);opacity:1}
+      .carousel-control-prev{left:-22px}.carousel-control-next{right:-22px}
+      .carousel-control-prev-icon,.carousel-control-next-icon{filter:invert(1) brightness(.3);width:18px;height:18px}
+      /* Why choose us */
+      .why-card{
+        background:#fff;border-radius:var(--radius);padding:28px;height:100%;
+        border:1px solid #eef2f7;display:flex;gap:16px;align-items:flex-start;transition:all .3s ease;
+      }
+      .why-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+      .why-icon{
+        flex:0 0 48px;width:48px;height:48px;border-radius:12px;background:rgba(16,185,129,.12);
+        color:var(--success);display:flex;align-items:center;justify-content:center;font-size:22px;
+      }
+      .why-card h5{font-size:17px;margin-bottom:6px}
+      .why-card p{margin:0;font-size:14px}
+      /* FAQ */
+      .accordion-item{border:1px solid #eef2f7;border-radius:var(--radius)!important;margin-bottom:14px;overflow:hidden;background:#fff}
+      .accordion-button{font-weight:600;color:var(--dark);padding:20px 24px;background:#fff}
+      .accordion-button:not(.collapsed){background:rgba(13,110,253,.04);color:var(--primary);box-shadow:none}
+      .accordion-button:focus{box-shadow:none;border-color:transparent}
+      .accordion-body{color:var(--light);padding:0 24px 22px}
+      /* CTA */
+      .cta-section{
+        background:var(--gradient);border-radius:24px;padding:80px 40px;text-align:center;color:#fff;
+        position:relative;overflow:hidden;box-shadow:0 30px 60px rgba(13,110,253,.25);
+      }
+      .cta-section::before,.cta-section::after{
+        content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08);
+      }
+      .cta-section::before{width:300px;height:300px;top:-100px;left:-100px}
+      .cta-section::after{width:240px;height:240px;bottom:-80px;right:-60px}
+      .cta-section h2{color:#fff;font-size:42px;margin-bottom:16px;position:relative}
+      .cta-section p{color:rgba(255,255,255,.9);font-size:18px;margin-bottom:32px;position:relative}
+      .cta-section .btn{background:#fff;color:var(--primary);font-weight:600;padding:14px 34px;position:relative}
+      .cta-section .btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+      /* Footer */
+      footer{background:#0B1220;color:#cbd5e1;padding:70px 0 24px;margin-top:100px}
+      footer h6{color:#fff;font-weight:600;margin-bottom:18px;font-size:15px;letter-spacing:.02em}
+      footer a{color:#94a3b8;text-decoration:none;display:block;margin-bottom:10px;transition:color .2s}
+      footer a:hover{color:var(--secondary)}
+      .footer-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:20px;margin-bottom:16px}
+      .footer-about{color:#94a3b8;font-size:14px;line-height:1.7}
+      .social-icons{display:flex;gap:10px;margin-top:18px}
+      .social-icons a{
+        width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);
+        display:flex;align-items:center;justify-content:center;color:#fff;margin:0;
+      }
+      .social-icons a:hover{background:var(--primary);color:#fff;transform:translateY(-2px)}
+      .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;margin-top:50px;text-align:center;color:#64748B;font-size:14px}
+      /* Reveal animation */
+      .reveal{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.2,.7,.2,1)}
+      .reveal.visible{opacity:1;transform:translateY(0)}
+      /* Responsive */
+      @media(max-width:991px){
+        .hero{padding:130px 0 60px;text-align:center}
+        .hero h1{font-size:40px}
+        .hero p.lead{margin:0 auto 28px}
+        .hero-meta{justify-content:center}
+        .hero-illu{height:420px;margin-top:60px}
+        .section-title{font-size:30px}
+        .section{padding:70px 0}
+        .cta-section{padding:60px 24px}
+        .cta-section h2{font-size:30px}
+      }
+      @media(max-width:575px){
+        .hero h1{font-size:32px}
+        .float-1,.float-2,.float-3,.float-4{width:78%}
+        .float-1{left:11%}.float-2{right:11%}.float-3{left:11%}.float-4{right:11%}
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" href="{% url "index" %}">
+          <img src="{% static "img\logo.png" %}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:8px">
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+          <i class="bi bi-list fs-3"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navContent">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item"><a class="nav-link" href="{% url "index" %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "browse_doctors" %}">Doctors</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "blogs" %}">Blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "contact" %}">Contact</a></li>
+          </ul>
+
+          {% comment %} user dashboard and auth option {% endcomment %}
+          <div class="d-flex gap-2 align-items-center">
+
+            {% if user.is_authenticated %}
+
+                {% if user.is_superuser %}
+                    <a class="btn btn-primary-grad" href="{% url 'admin_dashboard_home' %}">
+                        Dashboard
+                    </a>
+
+                {% elif user.is_doctor %}
+                    <a class="btn btn-primary-grad" href="{% url 'doctor_dashboard' %}">
+                        Dashboard
+                    </a>
+
+                {% else %}
+                    <a class="btn btn-primary-grad" href="{% url 'patient_dashboard' %}">
+                        Dashboard
+                    </a>
+                {% endif %}
+
+
+
+                  <!-- Profile -->
+                  <div class="dropdown">
+                      <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown">
+                          <img src="{{ user.profile_avatar.url }}"
+                              alt="Profile"
+                              width="40"
+                              height="40"
+                              class="rounded-circle border">
+                      </a>
+
+                      <ul class="dropdown-menu dropdown-menu-end">
+                          <li>
+                              <a class="dropdown-item" href="{% url 'patient_profile' %}">
+                                  My Profile
+                              </a>
+                          </li>
+
+                          <li>
+                              {% if user.is_doctor %}
+                                  <a class="dropdown-item" href="{% url 'doctor_dashboard' %}">
+                                      Dashboard
+                                  </a>
+                              {% else %}
+                                  <a class="dropdown-item" href="{% url 'patient_dashboard' %}">
+                                      Dashboard
+                                  </a>
+                              {% endif %}
+                          </li>
+
+                          <li><hr class="dropdown-divider"></li>
+
+                          <li>
+                              <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                  Logout
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+            {% else %}
+
+                  <a class="btn btn-ghost" href="{% url 'login' %}">
+                      Login
+                  </a>
+
+                  <a class="btn btn-primary-grad" href="{% url 'register' %}">
+                      Register
+                  </a>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    {% if messages %}
+      <div style=" margin-top: 75px; display: flex; justify-content: center; width: 100%;">
+
+          <div style=" width: 100%; max-width: 700px; padding: 12px 18px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; box-shadow: 0 6px 15px rgba(0,0,0,0.05); ">
+
+            {% for message in messages %}
+              <p style="
+                  margin: 0;
+                  color: #166534;
+                  font-weight: 500;
+                  font-size: 14px;
+              ">
+                {{ message }}
+              </p>
+            {% endfor %}
+
+          </div>
+      </div>
+    {% endif %}
+
+
+    {% block content %}
+            
+    {% endblock content %}
+
+    <section class="h-100">
+      <div class="container h-100">
+        <div class="row justify-content-sm-center h-100">
+          <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            
+            
+            <div class="text-center my-5 text-muted">
+              Copyright &copy; 2026 &mdash; JCU Hospital Apoinment Management
+            </div>
+            <p class="text-center my-5 text-muted">Developed By - Khan Md Saiful Islam</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="{% static 'js/login.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>

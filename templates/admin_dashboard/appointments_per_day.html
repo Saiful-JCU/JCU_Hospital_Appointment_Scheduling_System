@@ -1,0 +1,33 @@
+{% extends "admin_dashboard/base.html" %}
+
+{% block title %}Appointments Per Day{% endblock %}
+{% block page_title %}Appointments Per Day{% endblock %}
+
+{% block content %}
+<div class="dashboard-card">
+    <h3 class="mb-4">Appointments Per Day</h3>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>Date</th>
+                    <th>Total Appointments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in appointments_per_day %}
+                <tr>
+                    <td>{{ item.start_date }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="text-center">No report data found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

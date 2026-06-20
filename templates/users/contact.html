@@ -1,0 +1,74 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+
+    <head>
+        <title>Contact</title>
+        <style>
+            .body{
+                font-family: Arial;
+                background: #f4f7ff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            } 
+
+            .box{
+                width: 400px;
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            }
+
+            input, textarea{
+                width: 100%;
+                margin-bottom: 12px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+
+            button{
+                width: 100%;
+                padding: 10px;
+                background: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            button:hover{
+                background: #1d4ed8;
+            }
+        </style>
+    </head>
+    <section class="body" >
+
+        <div class="box">
+            <h2>Contact Us</h2>
+
+            {% for message in messages %}
+                <p style="color: green;">{{ message }}</p>
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <input type="text" name="name" placeholder="Your Name" required>
+
+                <input type="email" name="email" placeholder="Your Email" required>
+
+                <input type="text" name="subject" placeholder="Subject">
+
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+    </section >
+
+{% endblock content %}

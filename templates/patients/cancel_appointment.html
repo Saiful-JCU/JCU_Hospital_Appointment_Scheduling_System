@@ -1,0 +1,22 @@
+{% extends 'patients/base.html' %}
+{% load static %}
+
+{% block title %}Cancel Appointment{% endblock title %}
+{% block page_title %}Cancel Appointment{% endblock page_title %}
+
+{% block content %}
+<main>
+  <div class="card shadow-sm p-4 mb-4">
+    <h3>Cancel Appointment</h3>
+    <p>Doctor: Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
+    <p>Date: {{ appointment.start_date }}</p>
+    <p>Time: {{ appointment.time.time }}</p>
+    <p>Status: {{ appointment.status.status }}</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Confirm cancellation</button>
+      <a href="{% url 'my_appointments' %}" class="btn btn-secondary ms-2">Back</a>
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "admin_dashboard/base.html" %}
+
+{% block title %}Delete Patient{% endblock %}
+{% block page_title %}Delete Patient{% endblock %}
+
+{% block content %}
+<div class="dashboard-card" style="max-width: 700px;">
+    <h3 class="mb-3 text-danger">Delete Patient</h3>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ patient.user.first_name }} {{ patient.user.last_name }}</strong>?
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'admin_patient_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

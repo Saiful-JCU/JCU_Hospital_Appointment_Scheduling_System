@@ -1,0 +1,43 @@
+{% extends "patients/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">My Consultation Notes</h2>
+
+    {% if notes %}
+        <div class="row">
+            {% for note in notes %}
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ note.title }}</h5>
+
+                            <p class="card-text text-muted mb-2">
+                                Doctor:
+                                Dr. {{ note.doctor.user.first_name }} {{ note.doctor.user.last_name }}
+                            </p>
+
+                            <p class="card-text text-muted mb-3">
+                                Date: {{ note.created_at|date:"M d, Y h:i A" }}
+                            </p>
+
+                            <p class="card-text">
+                                {{ note.notes|truncatewords:25 }}
+                            </p>
+
+                            <a href="{% url 'consultation_note_detail' note.id %}" class="btn btn-primary mt-2">
+                                View Full Note
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No consultation notes available yet.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

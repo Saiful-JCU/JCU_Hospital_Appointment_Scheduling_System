@@ -1,0 +1,61 @@
+{% extends 'doctors/base.html' %}
+
+{% block content %}
+
+    <div style="min-height: 100vh; background: linear-gradient(135deg, #f4f8ff, #edf4ff); display: flex; justify-content: center; align-items: center; padding: 30px;">
+
+    <div style="
+        width: 100%;
+        max-width: 700px;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        padding: 35px 40px;
+        border: 1px solid #e5e7eb;
+    ">
+
+        <!-- Heading -->
+        <div style="text-align: center; margin-bottom: 28px;">
+            <h2 style="margin: 0; font-size: 30px; font-weight: 700; color: #1e3a8a;">
+                Create Schedule
+            </h2>
+            <p style="margin-top: 10px; color: #6b7280; font-size: 15px;">
+                Add available appointment time slots for patients.
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="
+                background: #f9fafb;
+                border-radius: 16px;
+                padding: 20px;
+                border: 1px solid #e5e7eb;
+            ">
+                {{ form.as_p }}
+            </div>
+
+            <!-- Button -->
+            <div style="margin-top: 25px; text-align: center;">
+                <button type="submit" style="
+                    border: none;
+                    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                    color: white;
+                    padding: 13px 28px;
+                    border-radius: 12px;
+                    font-size: 15px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+                ">
+                    Save Schedule
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

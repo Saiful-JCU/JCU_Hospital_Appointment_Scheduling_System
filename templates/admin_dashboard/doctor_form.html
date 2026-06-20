@@ -1,0 +1,146 @@
+{% extends "admin_dashboard/base.html" %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div style="padding: 30px; max-width: 900px; margin: 0 auto;">
+
+    <!-- Header -->
+    <div style="margin-bottom: 25px;">
+        <h2 style="margin: 0; color: #1e3a8a; font-weight: 700;">
+            {{ page_title }}
+        </h2>
+        <p style="margin-top: 8px; color: #64748b; font-size: 14px;">
+            Fill in the doctor information below.
+        </p>
+    </div>
+
+    <!-- Form Card -->
+    <div style="
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        padding: 30px;
+    ">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div style="
+                    background: #fef2f2;
+                    color: #dc2626;
+                    border: 1px solid #fecaca;
+                    padding: 12px 14px;
+                    border-radius: 10px;
+                    margin-bottom: 20px;
+                ">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+                {% for field in form %}
+                <div style="{% if field.name == 'bio' %}grid-column: span 2;{% endif %}">
+                    <label style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #334155;
+                    ">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small style="display: block; margin-top: 6px; color: #64748b;">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <div style="
+                            color: #dc2626;
+                            font-size: 13px;
+                            margin-top: 6px;
+                        ">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <!-- Buttons -->
+            <div style="
+                margin-top: 30px;
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            ">
+                <button type="submit" style="
+                    border: none;
+                    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                    color: white;
+                    padding: 12px 22px;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+                ">
+                    Save Doctor
+                </button>
+
+                <a href="{% url 'admin_doctor_list' %}" style="
+                    text-decoration: none;
+                    background: #f8fafc;
+                    color: #334155;
+                    padding: 12px 22px;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    border: 1px solid #cbd5e1;
+                ">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input, select, textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        outline: none;
+        font-size: 14px;
+        background: #fff;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    @media (max-width: 768px) {
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
+
+        div[style*="grid-column: span 2;"] {
+            grid-column: span 1 !important;
+        }
+    }
+</style>
+{% endblock %}
