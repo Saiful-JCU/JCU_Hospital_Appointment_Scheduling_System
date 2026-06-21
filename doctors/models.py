@@ -30,7 +30,6 @@ class DoctorSchedule(models.Model):
             f"{self.start_time}"
         )
 
-# doctors/views.py
 
 
 class ConsultationNote(models.Model):

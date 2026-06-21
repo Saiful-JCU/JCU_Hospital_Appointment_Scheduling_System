@@ -22,7 +22,17 @@ doctor
 ==================================
 
 User Name = 
-email - doctor@gmail.com
+email - doctor2@mail.com
+password - hospital2026
+
+
+User Name = 
+email - doctor3@mail.com
+password - hospital2026
+User Name = 
+
+User Name = 
+email - doctor1@mail.com
 password - hospital2026
 
 
