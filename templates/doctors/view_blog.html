@@ -1,12 +1,8 @@
-{% extends base_template %}
+{% extends "doctors/secondary-base.html" %}
 
 {% load static %}
 
-{% block title %} Blog Article {% endblock title %}
 
-{% block page_title %}
-  {{ blog.title|slice:":50"|wordwrap:50|default:'' }}{% if blog.title|length > 50 %}...{% endif %}
-{% endblock page_title %}
 
 {% block content %}
 <main>

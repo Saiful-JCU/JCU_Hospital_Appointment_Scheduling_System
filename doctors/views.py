@@ -20,35 +20,6 @@ from django.db import IntegrityError
 
 User = get_user_model()
 
-# @login_required(login_url='/login')
-# def doctor_dashboard(request):
-#     doctor = request.user.doctors
-
-#     total_blogs = Blogs.objects.filter(doctor=doctor).count()
-#     published_blogs = Blogs.objects.filter(doctor=doctor, is_published=True).count()
-#     draft_blogs = Blogs.objects.filter(doctor=doctor, is_published=False).count()
-
-#     total_appointments = Appointment.objects.filter(doctor=doctor).count()
-#     accepted_appointments = Appointment.objects.filter(doctor=doctor, status__status='Accepted').count()
-#     waited_appointments = Appointment.objects.filter(doctor=doctor, status__status='Waited').count()
-#     cancelled_appointments = Appointment.objects.filter(doctor=doctor, status__status='Cancelled').count()
-
-#     current_month = date.today().month
-#     appointments_per_day = Appointment.objects.filter(
-#         doctor=doctor,
-#         start_date__month=current_month
-#     ).values('start_date').annotate(count=Count('start_date')).order_by('start_date')
-
-#     return render(request, 'doctors/doctor_dashboard.html', {
-#         'total_blogs': total_blogs,
-#         'published_blogs': published_blogs,
-#         'draft_blogs': draft_blogs,
-#         'total_appointments': total_appointments,
-#         'accepted_appointments': accepted_appointments,
-#         'waited_appointments': waited_appointments,
-#         'cancelled_appointments': cancelled_appointments,
-#         'appointments_per_day': appointments_per_day,
-#     })
 
 @login_required(login_url='/login')
 def doctor_dashboard(request):
@@ -463,11 +434,8 @@ def upload_blog(request, blog_id=None):
     return render(request, 'doctors/upload_blog.html', context)
 
 
-@login_required(login_url='/login')
+# @login_required(login_url='/login')
 def view_blog(request, blog_id):
-    base_template = 'patients/base.html'
-    if request.user.is_doctor:
-      base_template = 'doctors/base.html'
     
     blog = get_object_or_404(Blogs, blog_id=blog_id)
 
@@ -482,8 +450,6 @@ def view_blog(request, blog_id):
         'blog': blog,
         'categories': categories,
         'comments': comments,
-        'base_template': base_template,
-        'use_patient_urls': not request.user.is_doctor,
     }
 
     return render(request, 'doctors/view_blog.html', context)

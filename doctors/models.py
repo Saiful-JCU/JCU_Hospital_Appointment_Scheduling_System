@@ -31,7 +31,6 @@ class DoctorSchedule(models.Model):
         )
 
 
-
 class ConsultationNote(models.Model):
     doctor = models.ForeignKey( Doctors, on_delete=models.CASCADE, related_name="consultation_notes" )
 
@@ -47,7 +46,6 @@ class ConsultationNote(models.Model):
 
     def __str__(self):
         return f"{self.doctor} → {self.patient}"
-
 
 
 class Category(models.Model):
@@ -80,7 +78,6 @@ class Blogs(models.Model):
 
   def __str__(self):
     return self.title
-
 
 
 class Comments(models.Model):

@@ -1,15 +1,24 @@
 {% load static %}
-
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}{% endblock title %} - JCU Hospital  Management Hospital Appointment Management System</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img\logo.png' %}">
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/base-style.css' %}" rel="stylesheet"/>
-    <meta name="description" content="Smart healthcare appointment management system by Jingdezhen Ceramic University. Book doctors, manage schedules, and receive reminders online." />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>{% block title %}{% endblock title %} - Hospital Management</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png' %}">
+
+  <link  href="{% static 'css/style-appointments.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/base-style.css' %}" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+  <link  href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link  href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+  <link  href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
+  <link  href="{% static 'css/styleblog.css' %}" rel="stylesheet">
+  <link  href="{% static 'css/styleblog-responsive.css' %}" rel="stylesheet">
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
@@ -17,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    
+
     <style>
       :root{
         --primary:#0D6EFD;
@@ -295,9 +304,9 @@
         .float-1{left:11%}.float-2{right:11%}.float-3{left:11%}.float-4{right:11%}
       }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
       <div class="container">
@@ -415,10 +424,12 @@
       </div>
     {% endif %}
 
+  <div class="main-content">
 
     {% block content %}
-            
     {% endblock content %}
+  </div>
+
 
     <section class="h-100">
       <div class="container h-100">
@@ -434,7 +445,12 @@
         </div>
       </div>
     </section>
-    <script src="{% static 'js/login.js' %}"></script>
+    
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/poper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
   </body>
 </html>
+

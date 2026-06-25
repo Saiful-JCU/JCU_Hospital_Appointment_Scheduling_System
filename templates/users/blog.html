@@ -4,75 +4,93 @@
 
 {% block content %}
 
+  <style>
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 80px;
+    }
+
+    @media (min-width: 768px) {
+        .blog-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .blog-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
 
 
-    <section class="container my-5">
-      <div class="text-center mb-4">
-        <h2 class="fw-bold">Latest Health Blogs</h2>
-        <p class="text-muted">Read health tips and articles from our doctors</p>
-      </div>
+      .blog-thumb {
+          width: 100%;
+          height: 220px;
+          overflow: hidden;
+          border-radius: 12px 12px 0 0; /* optional if card has rounded top */
+          position: relative;
+      }
+
+      .blog-thumb-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.4s ease, filter 0.4s ease;
+      }
+
+      /* hover effect */
+      .blog-thumb:hover .blog-thumb-img {
+          transform: scale(1.08);
+          filter: brightness(0.95);
+      }
+
+      /* tablet */
+      @media (max-width: 991px) {
+          .blog-thumb {
+              height: 200px;
+          }
+      }
+
+      /* mobile */
+      @media (max-width: 767px) {
+          .blog-thumb {
+              height: 180px;
+          }
+      }
+
+      /* small mobile */
+      @media (max-width: 480px) {
+          .blog-thumb {
+              height: 160px;
+          }
+      }
+  </style>
+
+
 
       {% if blogs %}
-      <div id="blogCarousel" class="carousel slide" data-bs-ride="carousel">
-        
-        <!-- indicators -->
-        <div class="carousel-indicators">
-          {% for blog in blogs %}
-            <button type="button"
-                    data-bs-target="#blogCarousel"
-                    data-bs-slide-to="{{ forloop.counter0 }}"
-                    class="{% if forloop.first %}active{% endif %}"
-                    {% if forloop.first %}aria-current="true"{% endif %}
-                    aria-label="Slide {{ forloop.counter }}">
-            </button>
-          {% endfor %}
-        </div>
 
-        <!-- slides -->
-        <div class="carousel-inner rounded shadow">
+        <div class="blog-grid">
 
           {% for blog in blogs %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <div class="row align-items-center bg-white p-4" style="min-height: 380px;">
-
-              <!-- blog image -->
-              <div class="col-md-5 text-center mb-3 mb-md-0">
-                {% if blog.thumbnail %}
-                  <img src="{{ blog.thumbnail.url }}" class="img-fluid rounded" style="max-height: 280px; object-fit: cover;" alt="{{ blog.title }}">
-                {% else %}
-                  <img src="{% static 'img/default-blog.jpg' %}" class="img-fluid rounded" style="max-height: 280px; object-fit: cover;" alt="Default blog image">
-                {% endif %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="blog-thumb">
+                    <img src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" class="blog-thumb-img">
+                </div>
+                <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">{{ blog.title }}</h3>
+                <p class="text-gray-600 mb-4">{{ blog.summary|truncatewords:20 }}</p>
+                <a href="{% url 'blog' blog.blog_id %}" class="text-blue-500 hover:underline">Read More</a>
               </div>
-
-              <!-- blog content -->
-              <div class="col-md-7">
-                <span class="badge bg-primary mb-2">{{ blog.id_category }}</span>
-                <h3 class="fw-bold">{{ blog.title }}</h3>
-                <p class="text-muted mb-2">
-                  By Dr. {{ blog.doctor.user.first_name }} {{ blog.doctor.user.last_name }}
-                  • {{ blog.posted_at }}
-                </p>
-                <p>
-                  {{ blog.summary|truncatewords:35 }}
-                </p>
-
-                <a href="#" class="btn btn-primary mt-2">Read More</a>
-              </div>
-
             </div>
-          </div>
           {% endfor %}
 
         </div>
 
-        <!-- controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#blogCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#blogCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
-        </button>
-      </div>
+
       {% else %}
         <div class="text-center text-muted">
           <p>No blogs available right now.</p>

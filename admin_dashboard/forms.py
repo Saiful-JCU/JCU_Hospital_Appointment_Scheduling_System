@@ -71,6 +71,11 @@ class DoctorCreateForm(forms.Form):
         required=False
     )
 
+    is_doctor = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
     def clean_username(self):
         username = self.cleaned_data['username']
         if Users.objects.filter(username=username).exists():
@@ -136,6 +141,11 @@ class DoctorUpdateForm(forms.Form):
         required=False
     )
 
+    is_doctor = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
     def __init__(self, *args, user_instance=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user_instance = user_instance
@@ -157,3 +167,5 @@ class DoctorUpdateForm(forms.Form):
         if qs.exists():
             raise forms.ValidationError("This email already exists.")
         return email
+
+

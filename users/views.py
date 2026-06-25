@@ -12,8 +12,12 @@ from doctors.models import DoctorSchedule, Blogs
 from .helpers import send_email
 import uuid
 
+
+Users = get_user_model()
+
+
 def home(request):
-  doctors = Doctors.objects.select_related('user', 'specialty').all()
+  doctors = Doctors.objects.select_related('user').filter(user__is_doctor=True)
   blogs = Blogs.objects.filter(is_published=True).select_related('doctor', 'id_category').order_by('-posted_at')[:6]
 
   for doctor in doctors:
@@ -35,7 +39,7 @@ def doctor_slots(request, doctor_id):
         "slots": slots
     })
 
-Users = get_user_model()
+
 
 
 def register(request):
@@ -91,7 +95,8 @@ def register(request):
           birthday=birthday,
           password=password,
           id_address=address,
-          is_doctor=(user_status == 'Doctor')
+          # is_doctor=(user_status == 'Doctor')
+          is_doctor=False
         )
 
         if user_status == 'Doctor':
@@ -100,7 +105,11 @@ def register(request):
         else:
           Patients.objects.create(user=user, insurance=insurance)
 
-        messages.success(request, 'Your account has been successfully registered. Please login.', extra_tags='success')
+        if user_status == 'Doctor':
+          messages.success(request, 'Your doctor account has been successfully registered. Please Wait for approval.', extra_tags='success')
+        else:
+          messages.success(request, 'Your account has been successfully registered. Please login.', extra_tags='success')
+        
         return redirect('login')
 
     return render(request, 'users/register.html', context={
@@ -209,9 +218,6 @@ def logout_view(request):
 # @login_required(login_url='/login')
 def browse_doctors(request, doctor_id=None):
 
-    # if request.user.is_doctor:
-    #     messages.error(request, 'Only patients can book appointments.')
-    #     return redirect('login')
 
     specialities = Specialty.objects.all()
 
@@ -220,7 +226,8 @@ def browse_doctors(request, doctor_id=None):
     filter_doctor_name = request.GET.get('filter_doctor_name')
 
     # base queryset
-    doctors = Doctors.objects.select_related('user').prefetch_related('schedules')
+
+    doctors = Doctors.objects.select_related('user').prefetch_related('schedules').filter(user__is_doctor=True)
 
     # filters
     if filter_speciality and filter_speciality != 'All':

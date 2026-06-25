@@ -140,7 +140,7 @@ def doctor_add(request):
                 password=make_password(form.cleaned_data['password']),
                 gender=form.cleaned_data['gender'],
                 birthday=form.cleaned_data.get('birthday'),
-                is_doctor=True,
+                is_doctor=form.cleaned_data.get('is_doctor', False),
                 id_address=address,
             )
 
@@ -195,7 +195,7 @@ def doctor_edit(request, doctor_id):
             user.email = form.cleaned_data['email']
             user.gender = form.cleaned_data['gender']
             user.birthday = form.cleaned_data.get('birthday')
-            user.is_doctor = True
+            user.is_doctor = form.cleaned_data.get('is_doctor', False)
             user.id_address = address
             user.save()
 
@@ -220,6 +220,7 @@ def doctor_edit(request, doctor_id):
             'city': address.city if address else '',
             'region': address.region if address else '',
             'code_postal': address.code_postal if address else '',
+            'is_doctor': user.is_doctor,
         }
         form = DoctorUpdateForm(initial=initial_data, user_instance=user)
 
