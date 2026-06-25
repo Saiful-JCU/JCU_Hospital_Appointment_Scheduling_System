@@ -235,7 +235,9 @@ def browse_doctors(request, doctor_id=None):
 
     if filter_doctor_name:
         doctors = doctors.filter(user__first_name__icontains=filter_doctor_name)
+    
 
+    
     if filter_city:
         doctors = doctors.filter(user__id_address__city__icontains=filter_city)
 
