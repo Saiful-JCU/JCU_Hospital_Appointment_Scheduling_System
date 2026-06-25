@@ -9,6 +9,9 @@ from django.contrib.auth import get_user_model
 from django.utils.http import url_has_allowed_host_and_scheme
 from .models import Doctors, Patients, Address , Reste_token , Specialty, Contact
 from doctors.models import DoctorSchedule, Blogs
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from django.db.models import Q
 from .helpers import send_email
 import uuid
 
@@ -29,10 +32,28 @@ def blog(request):
     blogs = Blogs.objects.filter(is_published=True).select_related('doctor', 'id_category').order_by('-posted_at')
     return render(request, "users/blog.html", {'blogs': blogs})
 
+# @login_required(login_url='/login')
+# def doctor_slots(request, doctor_id):
+#     doctor = Doctors.objects.prefetch_related("schedules").get(pk=doctor_id)
+#     slots = doctor.schedules.filter(is_available=True)
 
+#     return render(request, "users/doctor_slots.html", {
+#         "doctor": doctor,
+#         "slots": slots
+#     })
+
+@login_required(login_url='/login')
 def doctor_slots(request, doctor_id):
-    doctor = Doctors.objects.prefetch_related("schedules").get(pk=doctor_id)
-    slots = doctor.schedules.filter(is_available=True)
+    doctor = get_object_or_404( Doctors.objects.prefetch_related("schedules"), pk=doctor_id )
+
+    now = timezone.localtime()
+    today = now.date()
+    current_time = now.time()
+
+    slots = None
+
+    if doctor.schedules.exists():
+        slots = doctor.schedules.filter( is_available=True ).filter( Q(date__gt=today) | Q(date=today, end_time__gt=current_time) ).order_by("date", "start_time")
 
     return render(request, "users/doctor_slots.html", {
         "doctor": doctor,
@@ -228,6 +249,7 @@ def browse_doctors(request, doctor_id=None):
     # base queryset
 
     doctors = Doctors.objects.select_related('user').prefetch_related('schedules').filter(user__is_doctor=True)
+
 
     # filters
     if filter_speciality and filter_speciality != 'All':

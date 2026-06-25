@@ -384,10 +384,10 @@
                           </table>
                       </div>
                       <div class="container-new-example ">
-                          {% if doctor.schedules.all|length > 0 %}
-                          <a href="{% url 'doctor_slots' doctor.pk %}" class="glow-on-hover btn primary-color-background btn-primary mb-3">
-                              View Slots
-                          </a>
+                          {% if slots.has_valid_slots %}
+                              <a href="{% url 'doctor_slots' doctor.pk %}" class="glow-on-hover btn primary-color-background btn-primary mb-3">
+                                  View Slots
+                              </a>
                           {% else %}
                               <button class="glow-on-hover btn primary-color-background btn-primary mb-3" disabled>
                                   No Slots Available

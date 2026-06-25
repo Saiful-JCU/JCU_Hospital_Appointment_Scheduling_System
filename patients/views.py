@@ -105,47 +105,6 @@ def my_appointments(request):
   })
 
 
-# @login_required(login_url='/login')
-# def book_appointment(request, doctor_id=None):
-
-#     if request.user.is_doctor:
-#         messages.error(request, 'Only patients can book appointments.')
-#         return redirect(f"{reverse('login')}?next={reverse('book_appointment')}")
-
-#     specialities = Specialty.objects.all()
-#     doctors = Doctors.objects.all()
-
-#     filter_speciality = request.GET.get('filter_speciality')
-#     filter_city = request.GET.get('filter_city')
-#     filter_doctor_name = request.GET.get('filter_doctor_name')
-
-#     if filter_speciality and filter_speciality != 'All':
-#         doctors = doctors.filter(specialty__name=filter_speciality)
-
-#     if filter_doctor_name:
-#         doctors = doctors.filter(user__first_name__icontains=filter_doctor_name)
-
-#     if filter_city:
-#         doctors = doctors.filter(user__id_address__city__icontains=filter_city)
-
-#     selected_doctor = None
-#     slots = None
-
-#     if doctor_id:
-#         selected_doctor = Doctors.objects.prefetch_related("schedules").filter(pk=doctor_id).first()
-#         if selected_doctor:
-#             slots = selected_doctor.schedules.filter(is_available=True)
-
-#     return render(request, "patients/book_appointment.html", {
-#         'doctors': doctors,
-#         'specialities': specialities,
-#         'filter_speciality': filter_speciality,
-#         'filter_doctor_name': filter_doctor_name,
-#         'filter_city': filter_city,
-#         'selected_doctor': selected_doctor,
-#         'slots': slots,
-#     })
-
 
 @login_required(login_url='/login')
 def book_appointment(request, doctor_id=None):
@@ -188,69 +147,7 @@ def get_status_by_name(status_name):
     status, _ = Status.objects.get_or_create(status=status_name)
     return status
 
-# @login_required(login_url='/login')
-# def patient_confirm_book(request, doctor):
-#   if request.user.is_doctor:
-#     messages.error(request, 'Only patients can book appointments. Please login as a patient.')
-#     return redirect(f"{reverse('login')}?next={reverse('book_appointment')}")
 
-#   try:
-#     doc = Doctors.objects.get(user__username=doctor)
-#   except Doctors.DoesNotExist:
-#     messages.error(request, 'Doctor not found. Please select another doctor.')
-#     return redirect('book_appointment')
-
-#   if request.method == 'POST':
-#     date_str = request.POST.get('date')
-#     summary = request.POST.get('summary', '').strip()
-#     description = request.POST.get('description', '').strip()
-#     time_value = request.POST.get('time')
-#     patient = Patients.objects.get(user=request.user)
-
-#     if not date_str or not summary or not time_value:
-#       messages.error(request, 'Please provide a date, time, and summary for the appointment.')
-#     else:
-#       try:
-#         appointment_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-#       except ValueError:
-#         appointment_date = None
-
-#       if not appointment_date:
-#         messages.error(request, 'The appointment date is invalid.')
-#       elif appointment_date < date.today():
-#         messages.error(request, 'The appointment date must be in the future.')
-#       else:
-#         try:
-#           heure = Time.objects.get(time=time_value)
-#         except Time.DoesNotExist:
-#           heure = None
-#           messages.error(request, 'The selected time slot is invalid.')
-
-#         if heure:
-#           existing_appointment = Appointment.objects.filter(
-#               doctor=doc,
-#               start_date=appointment_date,
-#               time=heure
-#           ).exists()
-
-#           if existing_appointment:
-#             messages.error(request, 'This slot is already booked. Please choose another date or time.')
-#           else:
-#             status = get_status_by_name('Waited')
-#             Appointment.objects.create(
-#               summary=summary,
-#               description=description,
-#               start_date=appointment_date,
-#               time=heure,
-#               doctor=doc,
-#               patient=patient,
-#               status=status
-#             )
-#             messages.success(request, 'Appointment booked successfully.')
-#             return redirect('my_appointments')
-
-#   times = Time.objects.all()
-#   return render(request, 'patients/patient_confirm_book.html', {'times': times, 'doctor': doc})
 
 @login_required(login_url='/login')
 def patient_confirm_book(request, schedule_id):
